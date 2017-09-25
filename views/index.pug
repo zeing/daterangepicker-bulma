@@ -1,6 +1,27 @@
 extends layout
 
 block content
-  h1.title.is-1= title
-  p Welcome to #{title}
+  section
+    h1.title.is-1= title
+    p Welcome to #{title}
+
+  section
+    input.input#datarangepicker(type="text")
+
+
+  append addonScript
+    script.
+        var end = moment().add(1, 'day').startOf('day').subtract(1, 'seconds').utc();
+        var start = moment().subtract(15, 'day').startOf('day').utc();
+        $('input#datarangepicker').daterangepicker({
+            locale: {
+                format: 'DD/MM/YYYY'
+            },
+            timePicker: true,
+            applyClass: 'button is-primary',
+            maxDate: end.format('MM/DD/YYYY'),
+            startDate: start,
+        })
+
+
 

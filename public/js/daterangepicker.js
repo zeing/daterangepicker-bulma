@@ -4,12 +4,13 @@
 * @copyright: Copyright (c) 2012-2017 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
 * @website: http://www.daterangepicker.com/
+ * @modified : ZEING  for bulma 5.0.1
 */
 // Follow the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Make globaly available as well
-        define(['../../../Daterangepicker for bulma/moment', 'jquery'], function (moment, jquery) {
+        define(['moment', 'jquery'], function (moment, jquery) {
             if (!jquery.fn) jquery.fn = {}; // webpack server rendering
             return (root.daterangepicker = factory(moment, jquery));
         });
@@ -21,7 +22,7 @@
             jQuery = require('jquery');
             if (!jQuery.fn) jQuery.fn = {};
         }
-        var moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require('../../../Daterangepicker for bulma/moment');
+        var moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require('moment');
         module.exports = factory(moment, jQuery);
     } else {
         // Browser globals
@@ -61,9 +62,9 @@
         if (this.element.hasClass('dropup'))
             this.drops = 'up';
 
-        this.buttonClasses = 'btn btn-sm';
-        this.applyClass = 'btn-success';
-        this.cancelClass = 'btn-default';
+        this.buttonClasses = 'button is-small';
+        this.applyClass = 'button is-success';
+        this.cancelClass = 'button ';
 
         this.locale = {
             direction: 'ltr',
@@ -97,25 +98,41 @@
         if (typeof options.template !== 'string' && !(options.template instanceof $))
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +
-                    '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
-                      '</div>' +
-                    '</div>' +
+                    '<div class="daterangepicker_input">'+
+                    '<div class="field is-grouped">\n' +
+                    '   <p class="control is-expanded has-icons-left">\n' +
+                        '   <input class="input is-small " type="text" placeholder="Name" type="text" name="daterangepicker_start" value="">\n' +
+                        '   <span class="icon is-small is-left">\n' +
+                        '   <i class="fa fa-calendar"></i>\n' +
+                        '   </span>\n' +
+                    '   </p>\n' +
+                    '</div>'+
+                    '<div class="calendar-time">' +
+                    '<div></div>' +
+                    '<span class="icon is-small is-left">\n' +
+                        '<i class="fa fa-clock-o "></i>' +
+                    '</span>\n' +
+
+                    '</div></div>' +
+
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="calendar right">' +
-                    '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
-                      '</div>' +
-                    '</div>' +
+                    '<div class="daterangepicker_input">'+
+                    '<div class="field is-grouped">\n' +
+                    '   <p class="control is-expanded has-icons-left">\n' +
+                        '   <input class="input is-small" type="text" placeholder="Name" type="text" name="daterangepicker_start" value="">\n' +
+                        '   <span class="icon is-small is-left">\n' +
+                        '       <i class="fa fa-calendar"></i>\n' +
+                        '   </span>\n' +
+                    '   </p>\n' +
+                    '</div>'+
+                    '<div class="calendar-time">' +
+                    '<div></div>' +
+                    '<span class="icon is-small is-left">\n' +
+                    '<i class="fa fa-clock-o "></i>' +
+                    '</span>\n' +
+                    '</div></div>' +
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="ranges">' +
@@ -907,7 +924,9 @@
             // hours
             //
 
-            html = '<select class="hourselect">';
+            html = '<div class="field has-addons">';
+
+            html+= '<p class="control is-expanded"><span class="select is-small is-fullwidth"><select class="hourselect">';
 
             var start = this.timePicker24Hour ? 0 : 1;
             var end = this.timePicker24Hour ? 23 : 12;
@@ -933,13 +952,13 @@
                 }
             }
 
-            html += '</select> ';
+            html += '</select></span></p>';
 
             //
             // minutes
             //
-
-            html += ': <select class="minuteselect">';
+            html += '<p class="control"><a class="button is-static is-small">:</a></p>';
+            html += '<p class="control is-expanded"><span class="select is-small is-fullwidth"><select class="minuteselect">';
 
             for (var i = 0; i < 60; i += this.timePickerIncrement) {
                 var padded = i < 10 ? '0' + i : i;
@@ -960,14 +979,15 @@
                 }
             }
 
-            html += '</select> ';
+            html += '</select></span></p>';
 
             //
             // seconds
             //
 
             if (this.timePickerSeconds) {
-                html += ': <select class="secondselect">';
+                html += '<p class="control"><a class="button is-static is-small">:</a></p>';
+                html += '<p class="control is-expanded"><span class="select is-small is-fullwidth"><select class="secondselect">';
 
                 for (var i = 0; i < 60; i++) {
                     var padded = i < 10 ? '0' + i : i;
@@ -988,7 +1008,7 @@
                     }
                 }
 
-                html += '</select> ';
+                html += '</select> </span></p>';
             }
 
             //
@@ -996,7 +1016,7 @@
             //
 
             if (!this.timePicker24Hour) {
-                html += '<select class="ampmselect">';
+                html += '<p class="control is-expanded"><span class="select is-small is-fullwidth"><select class="ampmselect">';
 
                 var am_html = '';
                 var pm_html = '';
@@ -1013,9 +1033,9 @@
                     html += '<option value="AM" selected="selected"' + am_html + '>AM</option><option value="PM"' + pm_html + '>PM</option>';
                 }
 
-                html += '</select>';
+                html += '</select></span></p>';
             }
-
+            html += '</div>';
             this.container.find('.calendar.' + side + ' .calendar-time div').html(html);
 
         },
