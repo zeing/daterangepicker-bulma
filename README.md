@@ -10,4 +10,4 @@ bulma : 5.0.1
 
 **HOW TO USE**
 
-daterangepicker-bulma.js instead daterangepicker.js
+daterangepicker-bulma.js (`/public/js/daterangepicker.js`) instead daterangepicker.js
